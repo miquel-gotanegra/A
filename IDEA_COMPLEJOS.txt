@@ -1,0 +1,18 @@
+
+CHECK IF UNICYCLIC
+//s'haura d'argumentar al pdf perque pero te bona pinta
+
+Does your graph consists of a single connected component?
+
+In this case just count vertices and edges and check |V| - |E| = 0
+
+Otherwise count the number of connected components O(|V| + |E|), and check |V| - |E| = number of connected components - 1.
+
+Remark: having more than one connected component is a counterexample to your algorithm.
+
+
+CHECK IF TREE:
+
+un graf es un arbre si es conex i te arestes = vertex-1 //aixo s'ha de probar al pdf també
+
+CHECK IF COMPLEX := CHECK IF (UNICYCLIC OR TREE) 
