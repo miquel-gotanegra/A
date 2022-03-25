@@ -20,16 +20,15 @@ class Graph {
     private:
         GRAPH g;
         map<int,pair<double,double> > pos; // cada vertex te una posició xy en els grafs geomentrics
-        bool binomial = false;
-        bool geom = false;
-        bool grid = false;
+        string tipo ="";
         double dist = 0;
         int mida = 0;
 
-        Graph(GRAPH grafo,bool bin = true){
+        Graph(GRAPH grafo,int m,string t,int distancia =0){
         g = grafo;
-        if(bin) binomial = true;
-        else geom = true; 
+        mida = m;
+        tipo = t;
+        if(tipo=="geom") dist = distancia;
         }
 
         //Esta funcion la professora nos dijo que no hacia falta asi que finalmente no la utilizamos, 
@@ -55,11 +54,18 @@ class Graph {
     int size(){
         return mida;
     }
+
+    int num_aristas(){
+        int suma =0;
+        for (auto it = g.begin(); it != g.end(); it++){
+            suma += it->second.size();
+        }
+        return suma;
+    }
+
     void randomBinomial(int num_nodes, double prob) {
         // prob betwen 0 and 1, probabilitat de que dos nodes qualsevols siguin adjacents
-        binomial = true;
-        geom = false;
-        grid = false;
+        tipo="bin";
         mida = num_nodes;
 
         //inicialitzem el graph a 0, per si estem regenerant un graf ja creat
@@ -79,9 +85,7 @@ class Graph {
 
     void randomGeometric(int num_nodes, double radius, int mida_espai = 1000) {
        
-        binomial = false;
-        geom = true;
-        grid = false;
+        tipo="geom";
         mida = num_nodes;
 
         g = GRAPH();
@@ -102,21 +106,19 @@ class Graph {
     }
 
     void gridGraph(int m){
-        binomial = false;
-        geom = false;
-        grid = true;
-        mida = m;
+        tipo="grid";
+        mida = m*m;
         g = GRAPH();
  
-        for(int i =0; i <mida; ++i){
-            for(int j =0; j <mida;++j){
-                g[j + i*mida];
-                int p= j + i*mida;
+        for(int i =0; i <m; ++i){
+            for(int j =0; j <m;++j){
+                g[j + i*m];
+                int p= j + i*m;
                 pos[p] = make_pair(i,j);
-                if(j > 0)           g[j+i*mida].insert(j-1+i*mida);
-                if(j< (mida-1))     g[j+i*mida].insert(j+1+i*mida);
-                if(i > 0)           g[j+i*mida].insert(j+(i-1)*mida);
-                if(i< (mida-1))     g[j+i*mida].insert(j+(i+1)*mida);
+                if(j > 0)           g[j+i*m].insert(j-1+i*m);
+                if(j< (m-1))     g[j+i*m].insert(j+1+i*m);
+                if(i > 0)           g[j+i*m].insert(j+(i-1)*m);
+                if(i< (m-1))     g[j+i*m].insert(j+(i+1)*m);
             }
         }
     }
@@ -138,7 +140,7 @@ class Graph {
     }
     void printGraph(){
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
-        if(binomial){
+        if(tipo=="bin"){
             cout << "---------------------Binomial graph----------------------" << endl;
             
             for (auto it = g.cbegin(); it != g.cend(); it++){
@@ -148,7 +150,7 @@ class Graph {
                 cout << endl;
             }
         }
-        else if(geom){
+        else if(tipo=="geom"){
             cout << "---------------------Geometric graph---------------------" << endl;
             cout << "Distancia = " << dist << endl;
 
@@ -159,7 +161,7 @@ class Graph {
                 cout << endl;
             }
         }
-        else if(grid){ 
+        else if(tipo=="grid"){ 
             cout << "------------------------Grid graph-----------------------" << endl;
             cout << "Mida : " << mida << "x" << mida << endl;
 
@@ -204,7 +206,7 @@ class Graph {
                     }
                     q.pop();
                 }
-                subgraphs.push_back(Graph(sub,binomial));
+                subgraphs.push_back(Graph(sub,mida,tipo,dist));
             }
             
         }
@@ -268,6 +270,24 @@ class Graph {
         
             
 
+    }
+    bool allCC_Complex(){
+        //este grafo devuelve cierto si todas las componentes conexas de un grafo son complejas
+        //Una componente connexa no es compleja si es un arbol o es uniciclo
+
+        //Sabemos que: todo grafo(V,E) conexo tal que |E|=|V|-1 es un arbol, ya si hubiera un ciclo alguno de los vertices
+        //no estaria conectado, lo qual es contradiccion ya que la componente es conexa
+        //Un grafo uniciclo es un arbol al que le añadimos una arista, por tanto |E|=|V|. 
+        //Por el razonamiento anterior sabeos que todo grafo connexo tal que |E|=|V| tiene exactamente un ciclo.
+
+        vector<Graph> comp_conexas = bfs();
+        for(int i=0;i<comp_conexas.size();++i){
+            int g = comp_conexas[i].size();
+            int e = comp_conexas[i].num_aristas();
+            //comp_conexas[i].printGraph();
+            if(g-e < 0) return false;
+        }
+        return true;
     }
 /*
     int bfs() {
