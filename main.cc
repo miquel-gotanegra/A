@@ -42,7 +42,7 @@ void experimentacioConnex(string tipusGraf, int num_nodes){
         myfile.open ("geometric_connectivity/Size"+to_string(num_nodes)+".csv");
         myfile << "Numero de components conexes de un graf geometric de num_nodes "+to_string(num_nodes)+" amb radi R\n";
         myfile << "R;NUM_CC(mitjana)\n";
-        for(double radi = 0; radi <= 600 ; ++radi){
+        for(double radi = 0; radi <= 800 ; ++radi){
             double avg = 0;
             for (int j=0;j<10;++j){
                 g.randomGeometric(num_nodes,radi);
@@ -71,6 +71,7 @@ void experimentacioPercolation(string tipusPercolation, string tipusExperiment,s
         else if(tipusGraf=="geometric") grafos[i].randomGeometric(num_nodes,radius);
         else if(tipusGraf=="grid")grafos[i].gridGraph(num_nodes);
         if (!(grafos[i].connex_components() == 1)) --i;
+        //grafos[i].printGraph();
     }
 
     //Apliquem les percolacions per cada probabilitat i fem la mitjana
@@ -126,11 +127,12 @@ void experimentacioPercolation(string tipusPercolation, string tipusExperiment,s
         }
     }
     else{cout << "Wrong percolation type. Accepted: nodes, edges." << endl;return;}
+    
 }
 
 int main() {
-    
-   /* 
+
+    /*
     Graph g;
     g.randomBinomial(10,0.3);
     g.edgePercolation(0.3);
@@ -142,21 +144,20 @@ int main() {
     
 
    //COMPONENTS_CONEXES
-   /* 
-    vector<string> v = {"binomial";"geometric";"grid"};
+   
+    vector<string> v = {"binomial","geometric","grid"};
     vector<int> num_nodes = {10,25,50,100,200};
     for(int i =0;i<v.size();++i){
         for(int n=0;n<num_nodes.size();++n) experimentacioConnex(v[i],num_nodes[n]);
     }
-    */
     
     
     
+    
+   //PERCOLATION
 
     //int num_iteracions; //numero de grafs sobre els que fem l'experiment(ESTA COM A DEFAULT A LA FUNCIO)
-    vector<string> exp = {"connex","complex"};
-
-    //PERCOLATION
+    vector<string> exp = {"connex","complex"}; 
     for(int e=0;e<exp.size();++e){
 
         //BINOMIAL

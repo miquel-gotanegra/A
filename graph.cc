@@ -50,6 +50,7 @@ class Graph {
     public:
 
     Graph(){ 
+        srand(time(NULL));
     }
     int size(){
         return mida;
@@ -71,7 +72,7 @@ class Graph {
         //inicialitzem el graph a 0, per si estem regenerant un graf ja creat
         g = GRAPH();
 
-        srand(time(NULL));
+        
         for (int i = 0; i<num_nodes;++i){
             //aixo es necessari ja que si no si hi ha algun vertex que no es adjacent a cap altre no es crearia en el bucle de sota
             g[i];
@@ -91,7 +92,7 @@ class Graph {
         g = GRAPH();
         dist = radius;
 
-        srand(time(NULL));
+
         for (int i = 0; i < num_nodes; ++i) {
             pos[i] = make_pair((rand()%mida_espai)*1.0 ,(rand()%mida_espai)*1.0);
             
@@ -218,7 +219,7 @@ class Graph {
 
         queue<int> nodosABorrar;
 
-        srand(time(NULL));
+
         for(auto it = g.begin(); it != g.end();++it){
             if(prob < ((rand()%10000)/10000.0)){  //4 digitos de precision
                 int node = it->first;
@@ -247,7 +248,7 @@ class Graph {
 
         queue<int> aristasABorrar;
         set<int> nodesVisitats;
-        srand(time(NULL));
+
         for(auto it = g.begin(); it != g.end();++it){
             set<int>::iterator sit = it->second.begin();
             nodesVisitats.insert(it->first);
