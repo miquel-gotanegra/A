@@ -131,18 +131,8 @@ void experimentacioPercolation(string tipusPercolation, string tipusExperiment,s
 }
 
 int main() {
-
-    /*
-    Graph g;
-    g.randomBinomial(10,0.3);
-    g.edgePercolation(0.3);
-    g.printGraph();
-    cout << g.connex_components() << endl;
-    g.allCC_Complex();
-    */
-
-    
-
+ 
+   
    //COMPONENTS_CONEXES
    
     vector<string> v = {"binomial","geometric","grid"};

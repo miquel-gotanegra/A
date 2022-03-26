@@ -52,6 +52,12 @@ class Graph {
     Graph(){ 
         srand(time(NULL));
     }
+    Graph(GRAPH g){
+        this->g = g;
+        this->tipo = "bin";
+        this->mida = g.size();
+
+    }
     int size(){
         return mida;
     }
